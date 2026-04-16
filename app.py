@@ -2,6 +2,7 @@ import streamlit as st
 import preprocessor, helper
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 
 #st.title('WhatsApp Chat Analyzer')
@@ -21,9 +22,12 @@ def toggle_theme():
         with open(config_path, "r") as f:
             if 'base="dark"' in f.read():
                 current_theme = "dark"
-    new_theme = "dark" if current_theme == "light" else "light"
+    if current_theme == "light":
+        new_theme_config = '[theme]\nbase="dark"\nprimaryColor="#FF4B4B"\nbackgroundColor="#0E1117"\nsecondaryBackgroundColor="#262730"\ntextColor="#FAFAFA"\n'
+    else:
+        new_theme_config = '[theme]\nbase="light"\nprimaryColor="#FF4B4B"\nbackgroundColor="#FFFFFF"\nsecondaryBackgroundColor="#F0F2F6"\ntextColor="#31333F"\n'
     with open(config_path, "w") as f:
-        f.write(f'[theme]\nbase="{new_theme}"\n')
+        f.write(new_theme_config)
 
 st.sidebar.button("Toggle Light/Dark Theme 🌗", on_click=toggle_theme)
 
