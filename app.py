@@ -11,6 +11,34 @@ st.markdown(
     )
 
 st.sidebar.title("WhatsApp Chat Analyzer🔰")
+
+def toggle_theme():
+    import os
+    os.makedirs(".streamlit", exist_ok=True)
+    config_path = ".streamlit/config.toml"
+    current_theme = "light"
+    if os.path.exists(config_path):
+        with open(config_path, "r") as f:
+            if 'base="dark"' in f.read():
+                current_theme = "dark"
+    new_theme = "dark" if current_theme == "light" else "light"
+    with open(config_path, "w") as f:
+        f.write(f'[theme]\nbase="{new_theme}"\n')
+
+st.sidebar.button("Toggle Light/Dark Theme 🌗", on_click=toggle_theme)
+
+# Match matplotlib plot styles to the current theme
+current_theme = "light"
+if os.path.exists(".streamlit/config.toml"):
+    with open(".streamlit/config.toml", "r") as f:
+        if 'base="dark"' in f.read():
+            current_theme = "dark"
+
+if current_theme == "dark":
+    plt.style.use('dark_background')
+else:
+    plt.style.use('default')
+
 upload_file = st.sidebar.file_uploader('Choose a file')
 
 if upload_file is not None:
